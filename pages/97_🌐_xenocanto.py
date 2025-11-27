@@ -5,9 +5,9 @@ st.set_page_config(page_title="xeno-canto", page_icon="🌐")
 
 st.title("🌐 xeno-canto")
 st.markdown("""
-Bird recordings
+Explore the xeno-canto API.
 
-**URL:** [https://xeno-canto.org/explore/api](https://xeno-canto.org/explore/api)
+**URL:** [https://www.xeno-canto.org/api/2/recordings?query=cnt:brazil](https://www.xeno-canto.org/api/2/recordings?query=cnt:brazil)
 """)
 
 # Smart Display Logic
@@ -62,7 +62,7 @@ def smart_display(data):
 
 
 st.subheader("Live Demo")
-url = st.text_input("API Endpoint", "https://xeno-canto.org/explore/api")
+url = st.text_input("API Endpoint", "https://www.xeno-canto.org/api/2/recordings?query=cnt:brazil")
 
 if st.button("Fetch Data"):
     try:
@@ -72,19 +72,24 @@ if st.button("Fetch Data"):
         st.write(f"**Status:** {response.status_code}")
         
         if response.status_code == 200:
-            try:
-                data = response.json()
-                
-                # Use Smart Display
-                st.success("Data fetched successfully!")
-                smart_display(data)
-                
-                with st.expander("View Raw JSON"):
-                    st.json(data)
+            # Check Content Type for Images
+            content_type = response.headers.get('Content-Type', '')
+            if 'image' in content_type:
+                st.image(response.content, caption="Response Image")
+            else:
+                try:
+                    data = response.json()
                     
-            except ValueError:
-                st.warning("Response is not JSON. Displaying as text:")
-                st.text(response.text[:1000])
+                    # Use Smart Display
+                    st.success("Data fetched successfully!")
+                    smart_display(data)
+                    
+                    with st.expander("View Raw JSON"):
+                        st.json(data)
+                        
+                except ValueError:
+                    st.warning("Response is not JSON. Displaying as text:")
+                    st.text(response.text[:1000])
         else:
             st.error("Failed to fetch data.")
             

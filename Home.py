@@ -103,13 +103,13 @@ with st.expander("View Full List of 725 APIs"):
 78. **🤥 FakerAPI**
 79. **🗣️ LibreTranslate**
 80. **🎮 FreeToGame**
-81. **🌐 Cat Facts**
+81. **🌐 Cat Facts 81**
 82. **🌐 Dog Facts**
-83. **🌐 Dog Facts**
+83. **🌐 Dog Facts 83**
 84. **🌐 Dogs**
 85. **🌐 FishWatch**
 86. **🌐 HTTP Cat**
-87. **🌐 HTTP Dog**
+87. **🌐 HTTP Dog 87**
 88. **🌐 MeowFacts**
 89. **🌐 Movebank**
 90. **🌐 PlaceBear**
@@ -120,12 +120,12 @@ with st.expander("View Full List of 725 APIs"):
 95. **🌐 RescueGroups**
 96. **🌐 ShibeOnline**
 97. **🌐 xenocanto**
-98. **🌐 Zoo Animals**
+98. **🌐 Zoo Animals 98**
 99. **🌐 AnimeChan**
 100. **🌐 AnimeNewsNetwork**
 101. **🌐 Catboy**
 102. **🌐 NekosBest**
-103. **🌐 Studio Ghibli**
+103. **🌐 Studio Ghibli 103**
 104. **🌐 Trace Moe**
 105. **🌐 Waifuim**
 106. **🌐 Waifupics**
@@ -133,12 +133,12 @@ with st.expander("View Full List of 725 APIs"):
 108. **🌐 Art Institute of Chicago**
 109. **🌐 Colormind**
 110. **🌐 ColourLovers**
-111. **🌐 Icon Horse**
+111. **🌐 Icon Horse 111**
 112. **🌐 Icons8**
 113. **🌐 Lordicon**
 114. **🌐 Metropolitan Museum of Art**
 115. **🌐 PHPNoise**
-116. **🌐 Pixel Encounter**
+116. **🌐 Pixel Encounter 116**
 117. **🌐 xColors**
 118. **🌐 Chainlink**
 119. **🌐 Chainpoint**
@@ -172,7 +172,7 @@ with st.expander("View Full List of 725 APIs"):
 147. **🌐 NagerDate**
 148. **🌐 Namedays Calendar**
 149. **🌐 NonWorking Days**
-150. **🌐 NonWorking Days**
+150. **🌐 NonWorking Days 150**
 151. **🌐 Russian Calendar**
 152. **🌐 UK Bank Holidays**
 153. **🌐 AnonFiles**
@@ -252,7 +252,7 @@ with st.expander("View Full List of 725 APIs"):
 227. **🌐 npm Registry**
 228. **🌐 oyyi**
 229. **🌐 QR code**
-230. **🌐 QR code**
+230. **🌐 QR code 230**
 231. **🌐 Qrcode Monkey**
 232. **🌐 ReqRes**
 233. **🌐 RSS feed to JSON**
@@ -305,7 +305,7 @@ with st.expander("View Full List of 725 APIs"):
 280. **🌐 Foodish**
 281. **🌐 Fruityvice**
 282. **🌐 Open Brewery DB**
-283. **🌐 Open Food Facts**
+283. **🌐 Open Food Facts 283**
 284. **🌐 PunkAPI**
 285. **🌐 Rustybeer**
 286. **🌐 TacoFancy**
@@ -358,7 +358,7 @@ with st.expander("View Full List of 725 APIs"):
 333. **🌐 Psychonauts**
 334. **🌐 Puyo Nexus**
 335. **🌐 Raider**
-336. **🌐 Rick and Morty**
+336. **🌐 Rick and Morty 336**
 337. **🌐 RPS 101**
 338. **🌐 RuneScape**
 339. **🌐 Sakura CardCaptor**
@@ -457,7 +457,7 @@ with st.expander("View Full List of 725 APIs"):
 432. **🌐 Open Government Italy**
 433. **🌐 Open Government Lithuania**
 434. **🌐 Open Government Mexico**
-435. **🌐 Open Government Mexico**
+435. **🌐 Open Government Mexico 435**
 436. **🌐 Open Government Netherlands**
 437. **🌐 Open Government New Zealand**
 438. **🌐 Open Government Norway**
@@ -487,7 +487,7 @@ with st.expander("View Full List of 725 APIs"):
 462. **🌐 Coronavirus in the UK**
 463. **🌐 Covid Tracking Project**
 464. **🌐 Covid19**
-465. **🌐 Covid19**
+465. **🌐 Covid19 465**
 466. **🌐 Covid19 Datenhub**
 467. **🌐 Covid19 Government Response**
 468. **🌐 Covid19 India**
@@ -527,7 +527,7 @@ with st.expander("View Full List of 725 APIs"):
 502. **🌐 Chronicling America**
 503. **🌐 Graphs for Coronavirus**
 504. **🌐 Inshorts News**
-505. **🌐 Spaceflight News**
+505. **🌐 Spaceflight News 505**
 506. **🌐 18F**
 507. **🌐 API Setu**
 508. **🌐 Archiveorg**
@@ -537,7 +537,7 @@ with st.expander("View Full List of 725 APIs"):
 512. **🌐 French Address Search**
 513. **🌐 Lowy Asia Power Index**
 514. **🌐 Microlinkio**
-515. **🌐 Nobel Prize**
+515. **🌐 Nobel Prize 515**
 516. **🌐 Open Data Minneapolis**
 517. **🌐 openAFRICA**
 518. **🌐 OpenSanctions**
@@ -557,7 +557,7 @@ with st.expander("View Full List of 725 APIs"):
 532. **🌐 Shields**
 533. **🌐 PatentsView**
 534. **🌐 USPTO**
-535. **🌐 Advice Slip**
+535. **🌐 Advice Slip 535**
 536. **🌐 Biriyani As A Service**
 537. **🌐 Dictum**
 538. **🌐 FOAAS**
@@ -579,7 +579,7 @@ with st.expander("View Full List of 725 APIs"):
 554. **🌐 Phone Specification**
 555. **🌐 apilayer screenshotlayer**
 556. **🌐 Imsea**
-557. **🌐 Lorem Picsum**
+557. **🌐 Lorem Picsum 557**
 558. **🌐 PlaceKeanu**
 559. **🌐 Readme typing SVG**
 560. **🌐 ReSmushit**
@@ -661,9 +661,9 @@ with st.expander("View Full List of 725 APIs"):
 636. **🌐 Spanish random words**
 637. **🌐 This Person Does not Exist**
 638. **🌐 Toolcarton**
-639. **🌐 UUID Generator**
+639. **🌐 UUID Generator 639**
 640. **🌐 What The Commit**
-641. **🌐 Yes No**
+641. **🌐 Yes No 641**
 642. **🌐 PostalPinCode**
 643. **🌐 Postmon**
 644. **🌐 WhatPulse**
@@ -733,7 +733,7 @@ with st.expander("View Full List of 725 APIs"):
 708. **🌐 Stream**
 709. **🌐 Stromberg Quotes**
 710. **🌐 SWAPI**
-711. **🌐 SWAPI**
+711. **🌐 SWAPI 711**
 712. **🌐 SWAPI GraphQL**
 713. **🌐 ThronesApi**
 714. **🌐 TVMaze**

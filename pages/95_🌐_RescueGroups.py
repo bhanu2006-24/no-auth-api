@@ -5,9 +5,9 @@ st.set_page_config(page_title="RescueGroups", page_icon="🌐")
 
 st.title("🌐 RescueGroups")
 st.markdown("""
-Adoption
+Explore the RescueGroups API.
 
-**URL:** [https://userguide.rescuegroups.org/display/APIDG/API+Developers+Guide+Home](https://userguide.rescuegroups.org/display/APIDG/API+Developers+Guide+Home)
+**URL:** [https://api.rescuegroups.org/v5/public/animals/search/available/](https://api.rescuegroups.org/v5/public/animals/search/available/)
 """)
 
 # Smart Display Logic
@@ -62,7 +62,7 @@ def smart_display(data):
 
 
 st.subheader("Live Demo")
-url = st.text_input("API Endpoint", "https://userguide.rescuegroups.org/display/APIDG/API+Developers+Guide+Home")
+url = st.text_input("API Endpoint", "https://api.rescuegroups.org/v5/public/animals/search/available/")
 
 if st.button("Fetch Data"):
     try:
@@ -72,19 +72,24 @@ if st.button("Fetch Data"):
         st.write(f"**Status:** {response.status_code}")
         
         if response.status_code == 200:
-            try:
-                data = response.json()
-                
-                # Use Smart Display
-                st.success("Data fetched successfully!")
-                smart_display(data)
-                
-                with st.expander("View Raw JSON"):
-                    st.json(data)
+            # Check Content Type for Images
+            content_type = response.headers.get('Content-Type', '')
+            if 'image' in content_type:
+                st.image(response.content, caption="Response Image")
+            else:
+                try:
+                    data = response.json()
                     
-            except ValueError:
-                st.warning("Response is not JSON. Displaying as text:")
-                st.text(response.text[:1000])
+                    # Use Smart Display
+                    st.success("Data fetched successfully!")
+                    smart_display(data)
+                    
+                    with st.expander("View Raw JSON"):
+                        st.json(data)
+                        
+                except ValueError:
+                    st.warning("Response is not JSON. Displaying as text:")
+                    st.text(response.text[:1000])
         else:
             st.error("Failed to fetch data.")
             

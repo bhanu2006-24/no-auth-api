@@ -5,9 +5,9 @@ st.set_page_config(page_title="HTTP Cat", page_icon="🌐")
 
 st.title("🌐 HTTP Cat")
 st.markdown("""
-Cat for every HTTP Status
+Explore the HTTP Cat API.
 
-**URL:** [https://http.cat/](https://http.cat/)
+**URL:** [https://http.cat/200](https://http.cat/200)
 """)
 
 # Smart Display Logic
@@ -62,7 +62,7 @@ def smart_display(data):
 
 
 st.subheader("Live Demo")
-url = st.text_input("API Endpoint", "https://http.cat/")
+url = st.text_input("API Endpoint", "https://http.cat/200")
 
 if st.button("Fetch Data"):
     try:
@@ -72,19 +72,24 @@ if st.button("Fetch Data"):
         st.write(f"**Status:** {response.status_code}")
         
         if response.status_code == 200:
-            try:
-                data = response.json()
-                
-                # Use Smart Display
-                st.success("Data fetched successfully!")
-                smart_display(data)
-                
-                with st.expander("View Raw JSON"):
-                    st.json(data)
+            # Check Content Type for Images
+            content_type = response.headers.get('Content-Type', '')
+            if 'image' in content_type:
+                st.image(response.content, caption="Response Image")
+            else:
+                try:
+                    data = response.json()
                     
-            except ValueError:
-                st.warning("Response is not JSON. Displaying as text:")
-                st.text(response.text[:1000])
+                    # Use Smart Display
+                    st.success("Data fetched successfully!")
+                    smart_display(data)
+                    
+                    with st.expander("View Raw JSON"):
+                        st.json(data)
+                        
+                except ValueError:
+                    st.warning("Response is not JSON. Displaying as text:")
+                    st.text(response.text[:1000])
         else:
             st.error("Failed to fetch data.")
             
