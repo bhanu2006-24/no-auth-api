@@ -1,92 +1,28 @@
 import streamlit as st
 import requests
+import json
 
-st.set_page_config(page_title="Steem", page_icon="🌐")
+st.set_page_config(page_title="Steem", page_icon="🪙")
 
-st.title("🌐 Steem")
-st.markdown("""
-Blockchain-based blogging and social media website
+st.markdown("# 🪙 Steem Blockchain")
+st.write("Get global properties of the Steem blockchain.")
 
-**URL:** [https://developers.steem.io/](https://developers.steem.io/)
-""")
-
-# Smart Display Logic
-
-def smart_display(data):
-    # 1. Handle Lists
-    if isinstance(data, list):
-        if len(data) > 0 and isinstance(data[0], dict):
-            st.dataframe(data)
-            # Also check first item for image
-            first_item = data[0]
-            for k, v in first_item.items():
-                if isinstance(v, str) and (v.endswith('.jpg') or v.endswith('.png') or v.endswith('.gif') or v.startswith('http')):
-                    if 'image' in k.lower() or 'img' in k.lower() or 'url' in k.lower() or 'src' in k.lower():
-                        st.image([item.get(k) for item in data[:5] if item.get(k)], width=200)
-                        break
-        else:
-            st.write(data)
-        return
-
-    # 2. Handle Dictionaries
-    if isinstance(data, dict):
-        # Check for Images
-        for k, v in data.items():
-            if isinstance(v, str) and (v.endswith('.jpg') or v.endswith('.png') or v.endswith('.gif')):
-                st.image(v, caption=k)
-                return
-            # Check for common image keys even if extension is missing (sometimes)
-            if 'image' in k.lower() and isinstance(v, str) and v.startswith('http'):
-                st.image(v, caption=k)
-                return
-        
-        # Check for Quotes/Facts/Text
-        for k, v in data.items():
-            if k.lower() in ['quote', 'fact', 'joke', 'text', 'setup', 'delivery', 'advice']:
-                st.info(f"**{k.capitalize()}:** {v}")
-                # Don't return, might have more info
-        
-        # Check for nested data
-        for k, v in data.items():
-            if isinstance(v, (dict, list)):
-                with st.expander(f"{k} Details"):
-                    smart_display(v)
-                    
-        # Display simple key-values
-        for k, v in data.items():
-            if isinstance(v, (str, int, float, bool)) and k.lower() not in ['quote', 'fact', 'joke', 'text', 'setup', 'delivery', 'advice']:
-                 # Filter out image urls we already showed
-                 if isinstance(v, str) and v.startswith('http') and ('image' in k.lower() or 'img' in k.lower()):
-                     continue
-                 st.write(f"**{k}:** {v}")
-
-
-st.subheader("Live Demo")
-url = st.text_input("API Endpoint", "https://developers.steem.io/")
-
-if st.button("Fetch Data"):
+if st.button("Get Properties"):
     try:
-        with st.spinner("Fetching data..."):
-            response = requests.get(url, timeout=5)
-        
-        st.write(f"**Status:** {response.status_code}")
-        
+        payload = {
+            "jsonrpc": "2.0",
+            "method": "condenser_api.get_dynamic_global_properties",
+            "params": [],
+            "id": 1
+        }
+        response = requests.post("https://api.steemit.com", json=payload)
         if response.status_code == 200:
-            try:
-                data = response.json()
-                
-                # Use Smart Display
-                st.success("Data fetched successfully!")
-                smart_display(data)
-                
-                with st.expander("View Raw JSON"):
-                    st.json(data)
-                    
-            except ValueError:
-                st.warning("Response is not JSON. Displaying as text:")
-                st.text(response.text[:1000])
+            data = response.json().get("result", {})
+            st.metric("Head Block Number", data.get("head_block_number"))
+            st.metric("Total Vesting Fund Steem", data.get("total_vesting_fund_steem"))
+            st.metric("Time", data.get("time"))
+            st.json(data)
         else:
-            st.error("Failed to fetch data.")
-            
+            st.error("API Error")
     except Exception as e:
-        st.error(f"An error occurred: {e}")
+        st.error(f"Error: {e}")
