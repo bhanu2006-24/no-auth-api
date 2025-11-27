@@ -1,92 +1,29 @@
 import streamlit as st
 import requests
 
-st.set_page_config(page_title="Trace Moe", page_icon="🌐")
+st.set_page_config(page_title="Trace.moe", page_icon="🔍")
 
-st.title("🌐 Trace Moe")
-st.markdown("""
-A useful tool to get the exact scene of an anime from a screenshot
+st.markdown("# 🔍 Trace.moe")
+st.write("Search for anime by screenshot.")
 
-**URL:** [https://soruly.github.io/trace.moe-api/#/](https://soruly.github.io/trace.moe-api/#/)
-""")
+image_url = st.text_input("Enter Image URL", "https://images.plurk.com/32B15UXxymfSMwKGTObY5e.jpg")
 
-# Smart Display Logic
-
-def smart_display(data):
-    # 1. Handle Lists
-    if isinstance(data, list):
-        if len(data) > 0 and isinstance(data[0], dict):
-            st.dataframe(data)
-            # Also check first item for image
-            first_item = data[0]
-            for k, v in first_item.items():
-                if isinstance(v, str) and (v.endswith('.jpg') or v.endswith('.png') or v.endswith('.gif') or v.startswith('http')):
-                    if 'image' in k.lower() or 'img' in k.lower() or 'url' in k.lower() or 'src' in k.lower():
-                        st.image([item.get(k) for item in data[:5] if item.get(k)], width=200)
-                        break
-        else:
-            st.write(data)
-        return
-
-    # 2. Handle Dictionaries
-    if isinstance(data, dict):
-        # Check for Images
-        for k, v in data.items():
-            if isinstance(v, str) and (v.endswith('.jpg') or v.endswith('.png') or v.endswith('.gif')):
-                st.image(v, caption=k)
-                return
-            # Check for common image keys even if extension is missing (sometimes)
-            if 'image' in k.lower() and isinstance(v, str) and v.startswith('http'):
-                st.image(v, caption=k)
-                return
-        
-        # Check for Quotes/Facts/Text
-        for k, v in data.items():
-            if k.lower() in ['quote', 'fact', 'joke', 'text', 'setup', 'delivery', 'advice']:
-                st.info(f"**{k.capitalize()}:** {v}")
-                # Don't return, might have more info
-        
-        # Check for nested data
-        for k, v in data.items():
-            if isinstance(v, (dict, list)):
-                with st.expander(f"{k} Details"):
-                    smart_display(v)
-                    
-        # Display simple key-values
-        for k, v in data.items():
-            if isinstance(v, (str, int, float, bool)) and k.lower() not in ['quote', 'fact', 'joke', 'text', 'setup', 'delivery', 'advice']:
-                 # Filter out image urls we already showed
-                 if isinstance(v, str) and v.startswith('http') and ('image' in k.lower() or 'img' in k.lower()):
-                     continue
-                 st.write(f"**{k}:** {v}")
-
-
-st.subheader("Live Demo")
-url = st.text_input("API Endpoint", "https://soruly.github.io/trace.moe-api/#/")
-
-if st.button("Fetch Data"):
+if st.button("Trace Anime"):
     try:
-        with st.spinner("Fetching data..."):
-            response = requests.get(url, timeout=5)
-        
-        st.write(f"**Status:** {response.status_code}")
-        
-        if response.status_code == 200:
-            try:
+        with st.spinner("Tracing..."):
+            response = requests.get(f"https://api.trace.moe/search?url={image_url}")
+            if response.status_code == 200:
                 data = response.json()
-                
-                # Use Smart Display
-                st.success("Data fetched successfully!")
-                smart_display(data)
-                
-                with st.expander("View Raw JSON"):
-                    st.json(data)
-                    
-            except ValueError:
-                st.warning("Response is not JSON. Displaying as text:")
-                st.text(response.text[:1000])
-        else:
-            st.error("Failed to fetch data.")
-            
+                if data["result"]:
+                    top_match = data["result"][0]
+                    st.success(f"Found: {top_match['filename']}")
+                    st.write(f"**Episode:** {top_match['episode']}")
+                    st.write(f"**Similarity:** {top_match['similarity']:.2%}")
+                    st.video(top_match['video'])
+                    st.image(top_match['image'], caption="Scene Snapshot")
+                else:
+                    st.warning("No match found.")
+            else:
+                st.error(f"API Error: {response.status_code}")
     except Exception as e:
-        st.error(f"An error occurred: {e}")
+        st.error(f"Error: {e}")
