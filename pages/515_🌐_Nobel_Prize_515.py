@@ -1,92 +1,24 @@
 import streamlit as st
 import requests
 
-st.set_page_config(page_title="Nobel Prize", page_icon="🌐")
+st.set_page_config(page_title="Nobel Prize", page_icon="🏅")
+st.markdown("# 🏅 Nobel Prize")
 
-st.title("🌐 Nobel Prize")
-st.markdown("""
-Open data about nobel prizes and events
+category = st.selectbox("Category", ["phy", "che", "med", "lit", "pea", "eco"])
+year = st.number_input("Year", 1901, 2023, 2020)
 
-**URL:** [https://www.nobelprize.org/about/developer-zone-2/](https://www.nobelprize.org/about/developer-zone-2/)
-""")
-
-# Smart Display Logic
-
-def smart_display(data):
-    # 1. Handle Lists
-    if isinstance(data, list):
-        if len(data) > 0 and isinstance(data[0], dict):
-            st.dataframe(data)
-            # Also check first item for image
-            first_item = data[0]
-            for k, v in first_item.items():
-                if isinstance(v, str) and (v.endswith('.jpg') or v.endswith('.png') or v.endswith('.gif') or v.startswith('http')):
-                    if 'image' in k.lower() or 'img' in k.lower() or 'url' in k.lower() or 'src' in k.lower():
-                        st.image([item.get(k) for item in data[:5] if item.get(k)], width=200)
-                        break
-        else:
-            st.write(data)
-        return
-
-    # 2. Handle Dictionaries
-    if isinstance(data, dict):
-        # Check for Images
-        for k, v in data.items():
-            if isinstance(v, str) and (v.endswith('.jpg') or v.endswith('.png') or v.endswith('.gif')):
-                st.image(v, caption=k)
-                return
-            # Check for common image keys even if extension is missing (sometimes)
-            if 'image' in k.lower() and isinstance(v, str) and v.startswith('http'):
-                st.image(v, caption=k)
-                return
-        
-        # Check for Quotes/Facts/Text
-        for k, v in data.items():
-            if k.lower() in ['quote', 'fact', 'joke', 'text', 'setup', 'delivery', 'advice']:
-                st.info(f"**{k.capitalize()}:** {v}")
-                # Don't return, might have more info
-        
-        # Check for nested data
-        for k, v in data.items():
-            if isinstance(v, (dict, list)):
-                with st.expander(f"{k} Details"):
-                    smart_display(v)
-                    
-        # Display simple key-values
-        for k, v in data.items():
-            if isinstance(v, (str, int, float, bool)) and k.lower() not in ['quote', 'fact', 'joke', 'text', 'setup', 'delivery', 'advice']:
-                 # Filter out image urls we already showed
-                 if isinstance(v, str) and v.startswith('http') and ('image' in k.lower() or 'img' in k.lower()):
-                     continue
-                 st.write(f"**{k}:** {v}")
-
-
-st.subheader("Live Demo")
-url = st.text_input("API Endpoint", "https://www.nobelprize.org/about/developer-zone-2/")
-
-if st.button("Fetch Data"):
+if st.button("Search"):
     try:
-        with st.spinner("Fetching data..."):
-            response = requests.get(url, timeout=5)
-        
-        st.write(f"**Status:** {response.status_code}")
-        
+        response = requests.get(f"https://api.nobelprize.org/2.1/nobelPrizes?awardYear={year}&nobelPrizeCategory={category}")
         if response.status_code == 200:
-            try:
-                data = response.json()
-                
-                # Use Smart Display
-                st.success("Data fetched successfully!")
-                smart_display(data)
-                
-                with st.expander("View Raw JSON"):
-                    st.json(data)
-                    
-            except ValueError:
-                st.warning("Response is not JSON. Displaying as text:")
-                st.text(response.text[:1000])
-        else:
-            st.error("Failed to fetch data.")
-            
+            data = response.json()
+            if 'nobelPrizes' in data:
+                for prize in data['nobelPrizes']:
+                    st.subheader(f"{prize['categoryFullName']['en']} ({prize['awardYear']})")
+                    for laureate in prize['laureates']:
+                        st.write(f"**{laureate['knownName']['en']}**")
+                        st.write(laureate['motivation']['en'])
+            else:
+                st.warning("No prizes found.")
     except Exception as e:
-        st.error(f"An error occurred: {e}")
+        st.error(f"Error: {e}")
